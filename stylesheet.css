@@ -1,11 +1,13 @@
 .Intro{
   width:1000px;
 }
-.pTopics{
+.bio{
   width:1000px;
+  background-color:#D1E0FF;
+  border:white;
 }
 table{
-  border: solid 1px;
+  border: solid 1px white;
 }
 body{
   background-color:#E0EBFF;
@@ -14,4 +16,19 @@ body{
 }
 .Header{
   display:inline-block;
+}
+th{
+  font-size:20px;
+}
+td{
+  margin:5px, 5px, 5px, 5px;
+}
+.odd{
+  background-color:#E0EBFF;
+}
+.even{
+  background-color:	#C2D6FF;
+}
+.heading{
+  background-color:#85ADFF;
 }
