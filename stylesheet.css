@@ -1,5 +1,17 @@
-.block{
-  width:100px;
-  height:100px;
-  background-color:black;
+.Intro{
+  width:1000px;
+}
+.pTopics{
+  width:1000px;
+}
+table{
+  border: solid 1px;
+}
+body{
+  background-color:#E0EBFF;
+  color:	#334C80;
+  font-family:Arial;
+}
+.Header{
+  display:inline-block;
 }
