@@ -6,7 +6,7 @@
   background-color:#D1E0FF;
   border:white;
 }
-table{
+#bio{
   border: solid 4px #334C80;
 }
 body{
@@ -17,6 +17,9 @@ body{
 .header{
   display:inline-block;
 }
+#pfcc{
+margin: auto;
+}
 th{
   font-size:20px;
 }
@@ -24,14 +27,14 @@ td{
   margin:5px, 5px, 5px, 5px;
 }
 .odd{
-  background-color:#E0EBFF;
+  background-color: #E0EBFF;
 }
 .even{
   background-color:	#C2D6FF;
 }
 .heading{
-  background-color:#85ADFF;
+  background-color: #85ADFF;
 }
-.pTopics{
+#pTopics{
   width:1000px;
 }
