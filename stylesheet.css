@@ -7,12 +7,12 @@
   border:white;
 }
 table{
-  border: solid 1px white;
+  border: solid 4px #334C80;
 }
 body{
-  background-color:#E0EBFF;
-  color:	#334C80;
-  font-family:Arial;
+  background-color: #FFFFFF;
+  color: #334C80;
+  font-family: Arial;
 }
 .header{
   display:inline-block;
@@ -32,4 +32,6 @@ td{
 .heading{
   background-color:#85ADFF;
 }
-h1.header({radius: 300})
+.pTopics{
+  width:1000px;
+}
