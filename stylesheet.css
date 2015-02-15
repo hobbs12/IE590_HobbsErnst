@@ -7,14 +7,15 @@ body{
   display:inline-block;
 }
 #pfcc{
-margin: auto auto auto auto;
+text-align: center;
+margin: 20px;
 }
 table{
   width:1000px;
+  border: solid 4px #334C80;
 }
 #bio{
-  border: solid 4px #334C80;
-  background-color:#D1E0FF;
+  background-color:  #E0EBFF;
 }
 th{
   font-size:20px;
