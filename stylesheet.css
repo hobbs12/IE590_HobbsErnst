@@ -14,7 +14,7 @@ body{
   color:	#334C80;
   font-family:Arial;
 }
-.Header{
+.header{
   display:inline-block;
 }
 th{
@@ -32,3 +32,4 @@ td{
 .heading{
   background-color:#85ADFF;
 }
+h1.header({radius: 300})
