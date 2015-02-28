@@ -1,21 +1,21 @@
-.Intro{
-  width:1000px;
+body{
+  background-color: #FFFFFF;
+  color: #334C80;
+  font-family: Arial;
 }
-.bio{
-  width:1000px;
-  background-color:#D1E0FF;
-  border:white;
+.header{
+  display:inline-block;
+}
+#pfcc{
+text-align: center;
+margin: 20px;
 }
 table{
-  border: solid 1px white;
+  width:1000px;
+  border: solid 4px #334C80;
 }
-body{
-  background-color:#E0EBFF;
-  color:	#334C80;
-  font-family:Arial;
-}
-.Header{
-  display:inline-block;
+#bio{
+  background-color:  #E0EBFF;
 }
 th{
   font-size:20px;
@@ -24,11 +24,19 @@ td{
   margin:5px, 5px, 5px, 5px;
 }
 .odd{
-  background-color:#E0EBFF;
+  background-color: #E0EBFF;
 }
 .even{
   background-color:	#C2D6FF;
 }
 .heading{
-  background-color:#85ADFF;
+  background-color: #85ADFF;
+}
+a:hover {
+  color: #334C80;
+  font-weight: bold;
+  text-decoration: none;
+}
+a:visited{
+  color: #FFFFFF;
 }

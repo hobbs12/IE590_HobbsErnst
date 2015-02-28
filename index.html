@@ -2,26 +2,34 @@
 <html>
 <head><title>590_HobbsErnst</title>
   <link type="text/css" rel="stylesheet" href="stylesheet.css"/>
-  <!--<script src="2.js"></script>-->
-  <script src="assets/javascript/jquery-1.11.2.js"></script>
+  <script src="javascript.js"></script>
+  <script src="jquery-1.11.2.js"></script>
 </head>
 <body>
-  <img class="Header" src="http://www.ipfcc.org/images/better-together-logo.jpg"/>
-  <h1 class="Header">Patient and Family Centered Care</h1>
-  <table class="bio">
+  <img class="header" src="http://www.ipfcc.org/images/better-together-logo.jpg"/>
+  <br>
+  <h1 id="pfcc">Patient and Family Centered Care</h1>
+  <table id="bio">
     <thead>
       <th colspan="2">Amanda Hobbs and Katie Ernst<br></th>
     </thead>
     <tbody class="Intro">
       <tr>
-
-        <td class ="AmandaInto"><span><strong>Amanda</strong><span> area but with Katie's bio as a sample paragraph....... graduated from Purdue University with a BSIE and was commissioned into the United States Air Force.  She served 5.5 years on active duty with assignments as an intelligence officer and systems engineer.<br>Her personal experience with medical error prompted her not only to volunteer as a patient advisor but also to redirect her career into engineering for healthcare.  She currently serves in the Air Force Reserve as a healthcare systems engineer.<br>Katie is in the Purdue MSIE program concentrating on human factors in healthcare.   Her thesis work investigates nursing handoffs and their effect on nursing care.</td>
-        <td class ="KatieInto"><span><strong>Katie</strong></span> graduated from Purdue University with a BSIE and was commissioned into the United States Air Force.  She served 5.5 years on active duty with assignments as an intelligence officer and systems engineer.<br>Her personal experience with medical error prompted her not only to volunteer as a patient advisor but also to redirect her career into engineering for healthcare.  She currently serves in the Air Force Reserve as a healthcare systems engineer.<br>Katie is in the Purdue MSIE program concentrating on human factors in healthcare.   Her thesis work investigates nursing handoffs and their effect on nursing care.</td>
+        <td class ="AmandaIntro"><span><strong>Amanda</strong><span> became interested in health-care improvement in her childhood when she experienced the effects of misdiagnoses.
+        <br>
+        <br>She attended Clemson Univeristy in South Carolina for her undergraduate degree. At Clemson, she was involved in many activities including undergraduate research and the Institute for Healthcare Improvement Open School Chapter.
+        <br>
+        <br>Amanda is currently a Ph.D. student at Purdue University in the School of Industrial Engineering studying human factors engineering in healthcare under the advisement of Dr. McComb.</td>
+        <td class ="KatieIntro"><span><strong>Katie</strong></span> graduated from Purdue University with a BSIE and was commissioned into the United States Air Force.  She served 5.5 years on active duty with assignments as an intelligence officer and systems engineer.
+        <br>Her personal experience with medical error prompted her not only to volunteer as a patient advisor but also to redirect her career into engineering for healthcare.  She currently serves in the Air Force Reserve as a healthcare systems engineer.
+        <br>Katie is in the Purdue MSIE program concentrating on human factors in healthcare.  Her thesis work investigates nursing handoffs and their effect on nursing care.</td>
       </tr>
     </tbody>
   </table>
+  <br>
+  <br>
   <div class="pTopics">
-    <table class ="pTopics">
+    <table id ="pTopics">
       <thead>
         <tr class = "heading">
         <td>Links</td><td>Description</td><td>Commentary</td>
@@ -33,7 +41,7 @@
           <td class = "Description">Visualizing Healthcare Quality Control Data</td>
           <td class = "Comment">This book is used as a guide by practicioners to learn and identify measures for hospitals to use in quality control and improvement. I would reach out to the authors for a dataset as presented at IHI National Forum 2013 which demonstrated the power of visualizing this data as a control chart. The data would be used to identify methods other the small multiples of run charts to visualize datasets.</td>
         </tr>
-        <trclass="odd"> <!--Item2-->
+        <tr class="odd"> <!--Item2-->
           <td class = "Link"><a href="s://data.medicare.gov/Hospital-Compare/HCAHPS-State/84jm-wiui"/>HCAPS Score by State</a></td>
           <td class = "Description">This is AHRQ data reporting patient satisfaction</td>
           <td class = "Comment">Patient Satisfaction is a leading measure for insurance reimbursment.  Visualizing this data could explain links between positive/negative reimbursement trends relative to other measures (by state, etc)</td>
@@ -54,31 +62,30 @@
           <td class = "Comment">Observing trends between states could identify population or public health meaures appropriate by state or region</td>
         </tr>
         <tr class="odd"> <!--Item6-->
-          <td class = "Link"></td>
-          <td class = "Description"></td>
-          <td class = "Comment"></td>
+          <td class = "Link"><a href="https://data.medicare.gov/Hospital-Compare/Hospital-ACS-Measures/akfs-5dgr"/>Hospital ACS measures</a></td>
+          <td class = "Description">These measures show differences in hospital care outcomes after surgery.</td>
+          <td class = "Comment">These "outcome of care surigical measures" include all participating hospitals and three surgery types, and could be useful for a patient or family member to make a decision about which hospital to go to for a certain type of surgery.</td>
         </tr>
         <tr class="even"> <!--Item7-->
-          <td class = "Link"></td>
-          <td class = "Description"></td>
-          <td class = "Comment"></td>
+          <td class = "Link"><a href="https://data.medicare.gov/Hospital-Compare/Healthcare-Associated-Infections-State/k2ze-bqvw"/>HAIs by State</a></td>
+          <td class = "Description">The Healthcare-Associated Infections (HAI) measures, developed by the CDC, provide information on infections that occur while the patient is in the hospital.</td>
+          <td class = "Comment">This information may be helpful to visualize to understand which states are best in which to receive care. (Hospital-specific data is available and would also be useful.) This could also show which states need more resources to combat HAIs since many HAIs can be prevented by using CDC-recommended infection control steps.</td>
         </tr>
         <tr class="odd"> <!--Item8-->
-          <td class = "Link"></td>
-          <td class = "Description"></td>
-          <td class = "Comment"></td>
+          <td class = "Link"><a href="https://data.medicare.gov/Hospital-Compare/Hospital-Value-Based-Purchasing-HVBP-Heart-Failure/waqh-8uyi"/>HBVP Heart Failure Scores</a></td>
+          <td class = "Description">Hospital Value-Based Purchasing (HVBP) performance rates and scores for processes of Heart Failure measures for participating hospitals by hospital.</td>
+          <td class = "Comment">These measures include all participating hospitals, and could be useful for a patient or family member to make a decision about which hospital to go to when the patient has heart failure.</td>
         </tr>
         <tr class="even"> <!--Item9-->
-          <td class = "Link"></td>
-          <td class = "Description"></td>
-          <td class = "Comment"></td>
+          <td class = "Link"><a href="https://data.medicare.gov/Hospital-Compare/Hospital-Value-Based-Purchasing-HVBP-Pneumonia-Sco/md6f-wqvv"/>HBVP Pneumonia Scores</a></td>
+          <td class = "Description">Hospital Value-Based Purchasing (HVBP) performance rates and scores for processes of Pneumonia measures for participating hospitals by hospital.</td>
+          <td class = "Comment">These measures include all participating hospitals, and could be useful for a patient or family member to make a decision about which hospital to go to when the patient someone has pneumonia.</td>
         </tr>
         <tr class="odd"> <!--Item10-->
-          <td class = "Link"></td>
-          <td class = "Description"></td>
-          <td class = "Comment"></td>
+          <td class = "Link"><a href="https://data.medicare.gov/Hospital-Compare/Inpatient-Psychiatric-Facility-Quality-Measure-Dat/q9vs-r7wp"/>Inpatient Psychiatric Facility Quality Measure Data</a></td>
+          <td class = "Description">IPFQR program gives six measures of psychiatric quality performance by facility.</td>
+          <td class = "Comment">These measures could be useful for a patient or family member to make a decision about which hospital to go to when the patient someone has mental health issues. Additionally, it is important for us to include some mental health data to highlight the need for more emphasis on holistic health in America.</td>
         </tr>
   </div>
-<
 </body>
 <html>
