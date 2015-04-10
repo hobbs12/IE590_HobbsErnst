@@ -3,7 +3,7 @@
 <head>
       <meta charset="utf-8">
       <title>Do longer school hours</title>
-      <script type="text/javascript" src="/d3/d3.js"></script>
+      <script type="text/javascript" src="http://d3js.org/d3.v2.min.js?2.9.1"></script>
       <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
       <style type="text/css">
       body{
