@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <meta charset="utf-8">
+      <title>Do longer school hours</title>
+      <script type="text/javascript" src="/d3/d3.js"></script>
+      <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+      <style type="text/css">
+      body{
+        background-color:lightgrey;
+      }
+
+      .chart1, .chart2{
+        fill:darkgrey;
+        font:10px sans-serif;
+        text-anchor: middle;
+      }
+      h2,h3, p, h4, h5{
+        font-family:Helvetica;
+        color:grey;
+        }
+      p{
+        font-size:10px;
+      }
+      .white{
+        color: white;
+      }
+      .green{
+        color:green;
+      }
+      .yellow{
+        color:yellow;
+      }
+      .axis path, .axis line{
+        fill: none;
+        stroke:darkgrey;
+        shape-rendering:crispEdges;
+      }
+      .bin{
+        width:750px;
+      }
+      </style>
+  </head>
+  <body>
+    <h2> <em>HAIs at VA Medical Centers in Indiana and Ohio:<br>A comparison</em></h3>
+
+    <h4>HAIs by facility/city</h4>
+    <svg class="chart1">
+      <text x="155" y="20" font-family="Helvetica" font-size="12px" fill="white">MRSA</text>
+      <text x="155" y="35" font-family="Helvetica" font-size="12px" fill="yellow">CAUTI</text>
+      <text x="155" y="50" font-family="Helvetica" font-size="12px" fill="green">CLABSI</text>
+      </svg>
+    <h5>Same Data</h5>
+    <svg class="chart2">
+      <text x="155" y="20" font-family="Helvetica" font-size="12px" fill="white">MRSA</text>
+      <text x="155" y="35" font-family="Helvetica" font-size="12px" fill="steelblue">CAUTI</text>
+      <text x="160" y="50" font-family="Helvetica" font-size="12px" fill="green">CLABSI</text>
+    </svg>
+
+
+      <script type="text/javascript">
+/*START SCRIPT*/
+/*ESTABLISH CANVAS*/
+
+      var barPadding = 1;
+      var margin = {top:5, right: 5, bottom:120, left:40};
+      var width = 650 - margin.left - margin.right;
+      var height = 600 - margin.top - margin.bottom;
+/*DECLARE SCALES*/
+      var x = d3.scale.ordinal()
+        .rangeRoundBands([0,width]);
+
+      var y = d3.scale.linear()
+        .range([height,0]);
+/*DECLARE AXIS*/
+      var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+
+      var yAxis = d3.svg.axis()
+        .scale(y)
+        .orient("left");
+
+/*SCIENCE CHART*/
+      var chart1 = d3.select(".chart1")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+
+      d3.json("visn1011JSON.json", function(error, data){
+        x.domain(data.map(function(d){return d.City;}));
+        y.domain([0, d3.max(data, function(d){return d.CAUTI;})]);
+
+    /*  WOULD LABEL X AXIS WITH COUNTRY NAME IF I COULD GET THIS TO WORK
+          .append("text")
+          .attr("fill", "white")
+          .attr("transform", "rotate(-90)");*/
+
+
+
+        var barWidth = width / data.length;
+
+    /*STARTS CREATING BARS*/
+      var bar=  chart1.selectAll("g")
+          .data(data)
+          .enter()
+          .append("g")
+          .attr("transform", function(d,i){return "translate(" + i * barWidth +",0)";});
+
+        bar.append("rect")
+          .attr("y", function(d) {return y(d.CAUTI);})
+          .attr("height", function(d) {return height - y(d.CAUTI);})
+          .attr("width", (barWidth / 3) -1)
+          .attr("class", "cauti")
+          .attr("fill", "yellow");
+
+        bar.append("rect")
+          .attr("y", function(d) {return y(d.CLABSI);})
+          .attr("height", function(d) {return height - y(d.CLABSI);})
+          .attr("width", (barWidth / 3) -1)
+          .attr("class", "clabsi")
+          .attr("transform", "translate(" + (barWidth/3) +",0)")
+          .attr("fill", "green");
+
+          bar.append("rect")
+          .attr("y", function(d) {return y(d.MRSA);})
+          .attr("height", function(d) {return height - y(d.MRSA);})
+          .attr("width", (barWidth/3) -1)
+          .attr("class", "mrsa")
+          .attr("transform", "translate(" + 2*(barWidth/3) +",0)")
+          .attr("fill", "white");
+
+          bar.append("text")
+            .attr("x", barWidth/2)
+            .attr("y",
+              function(d) {
+              return y(d.CLABSI)+3;})
+            .attr("dy", ".75em")
+            .attr("fill", "none")
+            .text(function(d) {return d.City;});
+
+          chart1.append("g")
+            .attr("class", "y axis")
+            .call(yAxis);
+
+          chart1.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height +")")
+            .call(xAxis)
+            .selectAll("text")
+            .attr("translate", "translate(-21.5,0)")
+            .style("text-anchor", "end")
+            .attr("dx", "-1em")
+            .attr("dy", "-1em")
+            .attr("fill", "darkgrey")
+            .attr("transform", "rotate(-90)")
+            .attr("translate", "translate(-21.5,0)");
+      });
+
+      var chart2 = d3.select(".chart2")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", "translate(" +margin.left + "," + margin.top + ")");
+
+
+      d3.json("visn1011JSON.json", function(error, data){
+        x.domain(data.map(function(d){return d.City;}));
+        y.domain([0, d3.max(data, function(d){return d.CLABSI;})]);
+
+        var barWidth = width / data.length;
+
+        var bar = chart2.selectAll("g")
+          .data(data)
+          .enter()
+          .append("g")
+          .attr("transform", function(d,i){return "translate(" + i * barWidth +",0)";});
+
+        bar.append("text")
+          .attr("x", barWidth/2)
+          .attr("y",
+            function(d) {
+            return y(d.CLABSI)+3;})
+          .attr("dy", ".75em")
+          .attr("fill", "none")
+          .text(function(d) {return d.City;});
+
+        bar.append("rect")
+            .attr("y", function(d) {return y(d.CAUTI);})
+            .attr("height", function(d) {return height - y(d.CAUTI);})
+            .attr("width", (barWidth / 3) -1)
+            .attr("class", "cauti")
+            .attr("fill", "steelblue");
+
+        bar.append("rect")
+          .attr("y", function(d) {return y(d.CLABSI);})
+          .attr("height", function(d) {return height - y(d.CLABSI);})
+          .attr("width", (barWidth / 3) -1)
+          .attr("class", "clabsi")
+          .attr("transform", "translate(" + (barWidth/3) +",0)")
+          .attr("fill", "green");
+
+        bar.append("rect")
+          .attr("y", function(d) {return y(d.MRSA);})
+          .attr("height", function(d) {return height - y(d.MRSA);})
+          .attr("width", (barWidth/3) -1)
+          .attr("class", "mrsa")
+          .attr("transform", "translate(" + 2 *(barWidth/3) +",0)")
+          .attr("fill", "white");
+
+          chart2.append("g")
+            .attr("class", "y axis")
+            .call(yAxis);
+
+          chart2.append("g")
+            .attr("class", "x axis")
+            .attr("transform", "translate(0," + height +")")
+            .call(xAxis)
+            .selectAll("text")
+            .style("text-anchor", "end")
+            .attr("dx", "-1em")
+            .attr("dy", "-1em")
+            .attr("fill", "darkgrey")
+            .attr("transform", "rotate(-90)")
+            .attr("translate", "translate(-21.5,0)");
+      });
+
+      </script>
+
+
+
+    <p>   </p>
+  </body>
+</html>
