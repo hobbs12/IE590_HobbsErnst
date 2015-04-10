@@ -168,7 +168,7 @@
 
       d3.json("visn1011JSON.json", function(error, data){
         x.domain(data.map(function(d){return d.City;}));
-        y.domain([0, d3.max(data, function(d){return d.CLABSI;})]);
+        y.domain([0, d3.max(data, function(d){return d.CAUTI;})]);
 
         var barWidth = width / data.length;
 
