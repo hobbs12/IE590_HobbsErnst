@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <meta charset="utf-8">
+      <title>Small Multiples</title>
+      <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+      <link rel="stylesheet" type="text/css" href="stylesheet.css"/>
+
+      <!-- Google Analytics-->
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-60214562-2']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+    </script>
+    <style type="text/css">
+
+
+      .commentary{
+        width: 1000px;
+        height: 300px
+      }
+      .stage, .commentary{
+        width: 1000px;
+        text-align: justify;
+        text-justify: inter-word;
+        font-size: medium;
+      }
+      .axis path, .axis line {
+        fill: none;
+        stroke: black;
+        shape-rendering: crispEdges;
+      }
+      .bar:hover {
+       fill: darkgrey ;
+       duration: 250ms;
+      }
+      .circle:hover {
+       fill: darkgrey ;
+       duration: 250ms;
+      }
+      .x.axis path {
+        display: none;
+      }
+      .bin{
+        width:750px;
+      }
+      #vis{
+        width: 1200px;
+        margin-top:40px;
+      }
+      .dot.hidden{
+        display:none;
+      }
+      </style>
+
+</head>
+
+  <body>
+    <div class = "header">
+    <h1>A New Way to See Healthcare Data</h2><h3 style = "large">A comparative look at medical centers</h3>
+    </div>
+    <div class = "stage">
+        <p> <strong>Big data in heathcare </strong> has given patients new opportunities to make choices between care facilities based on healthcare qualitymeasures.
+          Information about healthcare associated infections (HAIs) are an important component of understanding the quality of care at a facility.  Not only do these HAIs increase direct care costs, they have a dramatic impact on the patient. An extension of a hospitalization, delay in restoration to health,and loss of income for themselves or their caregiver are some of the patient-centered HAI side effects.
+          Improving outcomes cannot be realized without the right tools to understand the data, turning it into information and then knowledge that results in better patient care. Looking across the country, mandated heathcare reporting varies from state to state.  Even within states, many quality measures are provided on a voluntary basis creating holes in the datasets.</p>
+        <p>  <strong>The Veterans Affairs (VA) Healthsystem Medical Centers </strong>as a federal agency fall under mandated federal reporting, providing a more complete dataset to measure across and within individual facilities.</p>
+        <p> What are the tools that patients need to gain knowledge from this data?</p>
+          <p>  The current VA Hospital Compare website allows a user to compare quarterly scores between 2 facilities.
+          There are good questions that remain unanswered with this method. How has this facility changed over time? How does this facility compare to others within the region or nation?
+          Context is important.  We can learn more when we have the pieces integrated at the user's fingertips. The following visualization shows an example of what we can do with more data presented in an integrated way.  </p>
+        <p> <em>Click on a small graph or bar to learn more about your VA medical centers:</em></p>
+    </div>
+
+    <div id="vis"></div>
+  <script type="text/javascript">
+//START SCRIPT
+/*START SMALL MULTIPLES CODE*/
+/*
+Understanding and some code borrowed and adapted from:
+Michael Bostock's "Small Mutiples II" at https://gist.github.com/mbostock/9490313
+&
+officeofjane's "Small multiple bar charts with tooltips" at http://bl.ocks.org/officeofjane/7315455
+*/
+        var w = 300;
+        var h = 200;
+        var margin = {top: 15, right: 10, bottom: 100, left: 35}; /* Margin bottom needs to be 100 for text size*/
+        var color = d3.scale.category20b();
+      /*  var color = d3.scale.linear()
+          .range(["#ca0020","#f4a582","#f7f7f7","#92c5de","#0571b0"])
+          .domain([0,0.2,0.4,0.6,0.8]);*/
+        var xScale = d3.scale.ordinal()
+          .rangeRoundBands([0,w],.1);
+
+        var xScaleTime = d3.scale.ordinal()
+          .rangeRoundBands([0,w],.1);
+
+        var yScale = d3.scale.linear()
+          .range([h,0]);
+
+        var xAxis = d3.svg.axis()
+          .scale(xScale)
+          .orient("bottom");
+
+        var xAxisTime = d3.svg.axis()
+          .scale(xScaleTime)
+          .orient("bottom");
+
+        var yAxis = d3.svg.axis()
+          .scale(yScale)
+          .orient("left")
+          .ticks(5);
+
+        var line = d3.svg.line()
+          .x(function(d){return xScaleTime(d.timeframe);})
+          .y(function(d){return yScale(d.observed);})
+          ;
+
+/* could add add var tip code here for box that appears on hover */
+// DATA LOADED
+    d3.json('VAlargecities.json', function(data) {
+// DATA NESTED
+          var measures = d3.nest()
+            .key(function(d) {
+                //if (d.timeframe === "4") {
+                  return d.measure; //}
+              //TRYING to put "else" here that will pull data being logged as undefined
+               })
+            .entries(data);
+          console.log(measures);
+          console.log(measures["timeframe"]); //changed to timeframe
+// xScale domain
+    xScale.domain(data.map(function(d) { return d.city; }));
+    xScaleTime.domain(data.map(function(d) { return d.timeframe; }));
+
+
+  // Add an SVG element for each measure, with the desired dimensions and margin.
+  var svg = d3.select("#vis").selectAll("svg")
+    .data(measures)
+    .enter()
+    .append("svg")
+    .attr("width", w + margin.left + margin.right)
+    .attr("height", h + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+    .each(multiple);
+    /*.on("click", ) */
+
+//For MEASURE names
+  svg.append("text")
+    .attr("x", w/2)
+    .attr("y", 10)
+    .style("text-anchor", "left")
+    .style("font-size", "1.5em")
+    .style("font-weight", "bold")
+    .text(function(d) {return d.key});
+});
+
+
+function multiple (measures) {
+  var svg = d3.select(this);
+
+  yScale.domain([0, d3.max(measures.values, function(d) { return d.observed; })]);
+
+  svg.selectAll(".bar")
+      .data(function(d) {return measures.values;})
+      .enter()
+      .append("g")
+      .append("rect")
+      .filter(function(d){return d.timeframe==4;})
+      .attr("class", "bar")
+      .attr("x", function(d) { return xScale(d.city); })
+      .attr("width", xScale.rangeBand() )
+      .attr("y", function(d) { return yScale(d.observed); })
+      .attr("height", function(d) { return h - yScale(d.observed); })
+      .attr("fill", function(d) {return color(d.city)})
+      .append("title")
+      .attr("x", w + 10)
+      .attr("y", h/3)
+      .attr("dy", ".71em")
+      .attr("text-anchor", "start")
+      .attr("font-size", "1.1em")
+      .text(function(d){ return d.city + " has a " +d.measure+ " value of " + d.observed;})
+      ;
+
+    svg.selectAll(".dot")
+          .data(function(d) {return measures.values;})
+          .enter()
+          .append("g")
+          .append("circle")
+          .attr("class", "dot")
+          .attr("class", "hidden")
+          .attr("class", "circle")
+          .attr("cx", function(d) { return xScaleTime(d.timeframe); })
+          .attr("cy", function(d) { return yScale(d.observed); })
+          .attr("r", 2)
+          .attr("fill", function(d) {return color(d.city)})
+          .append("title")
+          .attr("x", function(d) { return xScaleTime(d.timeframe);} +2 )
+          .attr("y", function(d) { return yScale(d.observed); }+2)
+          .attr("dy", ".71em")
+          .attr("text-anchor", "start")
+          .attr("font-size", "1.1em")
+          .text(function(d){ return d.city + " has a " +d.measure+ " value of " + d.observed;})
+          ;
+  /*    svg.selectAll(".line")
+          .data(function(d) {return measures.values;})
+          .enter()
+          .append("path")
+          .attr("class", "hidden")
+          .attr("class", "line")
+          .attr("d", line(measures.values))
+          .attr("fill", function(d){return color(d.city)});
+
+
+/*  svg..line.selectAll(".line")
+      .data(function(d){return measures.values; })
+      .enter()
+      .append("line");
+/*      .attr("class", "line")
+      .attr("class", function(d){return d.city;})
+      .attr("class", function(d){return d.timespan;})
+      .attr("x", function(d){return xScaleTime(d.timespan)})
+      .attr("y", function(d){return h-yScale(d.observed)})
+      .attr("stroke", function(d){return color(d.city)})
+      ;*/
+
+
+  svg.append("g")
+  //add city ticks
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + h + ")")
+      .call(xAxis)
+  //add city names
+      .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-1em")
+      .attr("dy", "-.6em")
+      .attr("fill", "black")
+      .attr("transform", "rotate(-90)")
+      ;
+
+  svg.append("g")
+      //add quarter ticks
+      .attr("class", "x axis")
+      .attr("class","hidden")
+      .attr("class", "dot")
+      .attr("transform", "translate(0," + 15 + ")")
+      .call(xAxisTime)
+      //add city names
+          .selectAll("text")
+          .style("text-anchor", "middle")
+          .attr("dx", "-1em")
+          .attr("dy", "-.6em")
+          .attr("fill", "black")
+        ;
+
+  svg.append("g")
+    .attr("class", "y axis")
+    .call(yAxis)
+    .append("text")
+    .attr("x", w + 10)
+    .attr("y", h/3)
+    .attr("dy", ".71em")
+    .attr("text-anchor", "start")
+    .attr("font-size", "1.1em")
+    .text(function(d) { return d./*measure to indicate what this is for*/value});
+
+
+
+  // Accessing nested data: https://groups.google.com/forum/#!topic/d3-js/kummm9mS4EA
+  // data(function(d) {return d.values;})
+  // this will dereference the values for nested data for each group
+/*  svg.selectAll(".bar")
+      .data(function(d) {return measures.values;})
+      .data(function(d) {return d.timeframe == "4";})
+      .enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return xScale(d.city); })
+      .attr("width", xScale.rangeBand() )
+      .attr("y", function(d) { return yScale(d.observed); })
+      .attr("height", function(d) { return h - yScale(d); })
+      .attr("fill", function(d) {return color(d.city)})
+      /*.on("mouseover", display time series of selected city)
+      .on("mouseoff", turn on)
+      .on("click", zoom in and display time series of all cities data on bar chart, show legend)*/
+      ;
+
+      /*
+      function fourQtrs(d.city){
+      x.domain
+    }
+      */
+ };
+/*
+function type(d) {
+  d.percent = +d.percent;
+  return d;
+}
+*/
+      </script>
+      <div class= "commentary">
+      <p>Heathcare acquired infections or HAIs are a significant issue, costing millions of dollars per year for the US taxpayers in serving veterans, by incurring additional costs per patient per hospital stay. </p>
+      <p>Central line associated bloodstream infection(CLABSI)</p>
+      <p>Catheter associated urinary tract infection (CAUTI)</p>
+      <p>CLABSI and CAUTI are measured in infections per 1000 device days, that is the number of infections per 1000 days of using a central line or urinary catheter.  </p>
+      <p>Methicillin-resistant Staphylococcus aureus (MRSA) infection is measured in infections per 1000 patient days occupying a bed in the hopsital</p>
+      <p>Adjusted Length of Stay (aLOS), measured in days per hospitalization per patient is an indicator for when a facility is having more healthcare acquired infections</p>
+      <p>Patient Satisfaction is measured by survey and is scored on a scale of 1 to 300</p>
+
+      </div>
+
+      <div class = "Discus">
+    <div id="disqus_thread"></div>
+      <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES * * */
+          var disqus_shortname = 'patientcenteredcareviz';
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+          (function() {
+              var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+              dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+              (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+        </script>
+        <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+    </div>
+    <div class = "discusCount">
+        <script type="text/javascript">
+          /* * * CONFIGURATION VARIABLES * * */
+          var disqus_shortname = 'patientcenteredcareviz';
+          /* * * DON'T EDIT BELOW THIS LINE * * */
+            (function () {
+              var s = document.createElement('script'); s.async = true;
+              s.type = 'text/javascript';
+              s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+              (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+            }());
+        </script>
+    </div>
+
+  </body>
+</html>
